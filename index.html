@@ -1,49 +1,30 @@
-*{
-    margin: 0;
-    padding: 0;
-}
-
-html, body, div#application{
-    width: 100%;
-    height: 100%;
-}
-
-div#application{
-    font-size: 28px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: #dedede;
-}
-
-section#login {
-    box-sizing: border-box;
-    width: 100%;
-    max-width: 400px;
-    padding: 30px;
-    background-color: white;
-   }
- input {
-    box-sizing: border-box;
-    outline: none;
-    border: solid 2px #bed33f;
-    border-radius: 4px;
-    color: #292929;
-    width: 100%;
-    padding: 12px;
-    font-size: 14px;
-    background: rgba(255, 255, 255, 1);
-    margin-top: 16px ;
-   }
-   input#login-button{
-    width: 100%;
-    min-width: 280px;
-    color: white;
-    padding: 12px;
-    font-size: 14px;
-    font-weight: bold;
-    border-radius: 30px;
-    background: rgb(166, 206, 57);
-    cursor: pointer;
-   }
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="style.css">
+        <title>taste_my_atom</title>
+    </head>
+    <body>
+        <div id="application">
+            <h1>Привет!</h1>
+            <nav id="navigation"></nav>
+            <section id="login" hidden>
+                <form action="" id="login-form">
+                    <h2>Вход</h2>
+                    <input type="text" placeholder="Введите имя" name="username"><br>
+                    <input type="email" placeholder="Введите почту" name="email"><br>
+                    <input type="submit" value="Войти" id="login-button">
+                </form>
+            </section>
+            <section id="profile" hidden>
+                <h2>Меня зовут <span id="MyName">Георгий</span></h2>
+                <h2>Я люблю кино</h2>
+            </section>
+            <section id="about" hidden>
+                <h2>Это приложение</h2>
+            </section>
+        </div>
+        <script type="module" src="main.js"></script>
+    </body>
+</html>
