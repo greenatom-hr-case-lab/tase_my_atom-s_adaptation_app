@@ -1,6 +1,7 @@
 const http = require('http')
 const fs = require('fs')
 const User = require('./mydb')
+const selects = require('./selects')
 const express = require('express')
 const session = require('express-session')
 const connect = require('connect')
@@ -18,7 +19,21 @@ app.set('view engine', 'ejs')
 app.use('/public', express.static('public'))
 
 app.get('/', async function(req,res){
-    res.render('index',{MyName:"user1.name", currentUser: currentUser})
+    let myCrooks = []
+    bosses= await selects.findBosses()
+    res.render('index',{MyName:"user1.name", currentUser: currentUser, myCrooks: myCrooks, bosses: bosses})
+})
+
+app.get('/main', async function(req,res){
+    let arr = await currentUser.findMyCrooks()
+    bosses= await selects.findBosses()
+        var users = []
+        for (let u of arr) {
+            let us=new User
+            await us.findById(u)
+            users.push(us)
+        }
+    res.render('index',{MyName:currentUser.name, currentUser: currentUser, myCrooks: users, bosses: bosses})
 })
 
 app.post('/login', urlencodedParser, async function(req,res){
@@ -28,7 +43,15 @@ app.post('/login', urlencodedParser, async function(req,res){
         if((user.login==req.body.username)&&(user.password==req.body.password)){
             currentUser=user
             req.session.username=user.login
-            res.render('index',{MyName:currentUser.name, currentUser: currentUser})
+            let arr = await currentUser.findMyCrooks()
+            var users = []
+            bosses= await selects.findBosses()
+            for (let u of arr) {
+                let us=new User
+                await us.findById(u)
+                users.push(us)
+            }
+            res.render('index',{MyName:currentUser.name, currentUser: currentUser, myCrooks: users,bosses: bosses})
         }else{
             res.status(401).send('login error')
         }
@@ -40,11 +63,33 @@ app.post('/login', urlencodedParser, async function(req,res){
     //res.render('index',{MyName:"user.name"})
 })
 
+app.post("/newuser", urlencodedParser, async function(req,res){
+    let user = new User
+    user.name=req.body.name
+    user.last_name=req.body.last_name
+    user.patronimic=req.body.patronimic
+    user.login=req.body.login
+    user.boss_id=req.body.boss_id
+    user.hr_id=currentUser.id
+    user.password=req.body.password
+    user.save()
+    let arr = await currentUser.findMyCrooks()
+    var users = []
+    bosses= await selects.findBosses()
+    for (let u of arr) {
+        let us=new User
+        await us.findById(u)
+        users.push(us)
+    }
+    res.redirect('/main')
+})
+
 app.get('/logout', async function(req,res){
     req.session.username=''
     currentUser = new User
     res.redirect('/')
 })
+
 
 app.listen(3000, function(){
     console.log('server started')

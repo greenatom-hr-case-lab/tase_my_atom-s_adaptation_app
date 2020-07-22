@@ -113,11 +113,14 @@ class User{
     const sql = "INSERT INTO user(name, last_name, patronimic, login, password, goals) VALUES(?, ?, ?, ?, ?, ?)";
     
     let arr=[]
-
+    if(this.goals){
     for (let i = 0; i < this.goals.length; i++) {
       arr[i]=this.goals[i].join("&&")
     }
     arr=arr.join("||")
+    }else{
+      arr=""
+    }
 
    await connection.query(sql, [this.name, this.last_name, this.patronimic, this.login, this.password, arr], function(err, results) {
       if(err) console.log(err);
@@ -184,11 +187,17 @@ async function main(){
   await user.findById(1)
   let arr=[]
   arr=await user.findMyCrooks()
+  var users = []
+  for (let u of arr) {
+    let us=new User
+    await us.findById(u)
+    users.push(us)
+  }
   let user1 = new User
   await user1.findById(arr[1])
   user1.goals[0][0]="goal"
   user1.update()
-  console.log(user1)
+  console.log(users)
 }
 
 //main()
