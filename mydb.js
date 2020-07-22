@@ -28,53 +28,61 @@ class User{
   async findById(id){
     const connection = mysql.createPool(config);
     const [results, fields] = await connection.execute('select * from user where id = ?',[id])
-    this.id=results[0].id
-    this.name=results[0].name
-    this.last_name=results[0].last_name
-    this.patronimic=results[0].patronimic
-    if (results[0].goals) {
-      this.goals=results[0].goals.split("||").map(item => item.split("&&"))
+    if(results.length==1){
+      this.id=results[0].id
+      this.name=results[0].name
+      this.last_name=results[0].last_name
+      this.patronimic=results[0].patronimic
+      if (results[0].goals) {
+        this.goals=results[0].goals.split("||").map(item => item.split("&&"))
+      }
+      this.stage=results[0].stage
+      this.crook=results[0].crook
+      this.boss=results[0].boss
+      this.hr=results[0].hr
+      this.login=results[0].login
+      this.password=results[0].password
+      if ((results[0].boss===0)&&(results[0].hr===0)) {
+        const [boss, f] = await connection.execute('select boss_to_crook.id, boss_to_crook.boss from boss_to_crook where crook = ?',[this.id])
+        this.boss_id=boss[0].boss
+        const [hr,field] = await connection.execute('select hr_to_crook.id, hr_to_crook.hr from hr_to_crook where crook = ?',[this.id])
+        this.hr_id=hr[0].hr
+      }
+      connection.end()
+      return 0;
+    }else{
+      return 1
     }
-    this.stage=results[0].stage
-    this.crook=results[0].crook
-    this.boss=results[0].boss
-    this.hr=results[0].hr
-    this.login=results[0].login
-    this.password=results[0].password
-    if ((results[0].boss===0)&&(results[0].hr===0)) {
-      const [boss, f] = await connection.execute('select boss_to_crook.id, boss_to_crook.boss from boss_to_crook where crook = ?',[this.id])
-      this.boss_id=boss[0].boss
-      const [hr,field] = await connection.execute('select hr_to_crook.id, hr_to_crook.hr from hr_to_crook where crook = ?',[this.id])
-      this.hr_id=hr[0].hr
-    }
-    connection.end()
-    return 0;
   }
 
   async findByLogin(login){
     const connection = mysql.createPool(config);
     const [results, fields] = await connection.execute('select * from user where login = ?',[login])
-    this.id=results[0].id
-    this.name=results[0].name
-    this.last_name=results[0].last_name
-    this.patronimic=results[0].patronimic
-    if (results[0].goals) {
-      this.goals=results[0].goals.split("||").map(item => item.split("&&"))
+    if(results.length==1){
+      this.id=results[0].id
+      this.name=results[0].name
+      this.last_name=results[0].last_name
+      this.patronimic=results[0].patronimic
+      if (results[0].goals) {
+        this.goals=results[0].goals.split("||").map(item => item.split("&&"))
+      }
+      this.stage=results[0].stage
+      this.crook=results[0].crook
+      this.boss=results[0].boss
+      this.hr=results[0].hr
+      this.login=results[0].login
+      this.password=results[0].password
+      if ((results[0].boss===0)&&(results[0].hr===0)) {
+        const [boss, f] = await connection.execute('select boss_to_crook.id, boss_to_crook.boss from boss_to_crook where crook = ?',[this.id])
+        this.boss_id=boss[0].boss
+        const [hr,field] = await connection.execute('select hr_to_crook.id, hr_to_crook.hr from hr_to_crook where crook = ?',[this.id])
+        this.hr_id=hr[0].hr
+      }
+      connection.end()
+      return 0;
+    }else{
+      return 1
     }
-    this.stage=results[0].stage
-    this.crook=results[0].crook
-    this.boss=results[0].boss
-    this.hr=results[0].hr
-    this.login=results[0].login
-    this.password=results[0].password
-    if ((results[0].boss===0)&&(results[0].hr===0)) {
-      const [boss, f] = await connection.execute('select boss_to_crook.id, boss_to_crook.boss from boss_to_crook where crook = ?',[this.id])
-      this.boss_id=boss[0].boss
-      const [hr,field] = await connection.execute('select hr_to_crook.id, hr_to_crook.hr from hr_to_crook where crook = ?',[this.id])
-      this.hr_id=hr[0].hr
-    }
-    connection.end()
-    return 0;
   }
 
   async findMyCrooks(){
@@ -169,6 +177,8 @@ class User{
   
 }
 
+module.exports = User
+
 async function main(){
   let user = new User
   await user.findById(1)
@@ -181,4 +191,4 @@ async function main(){
   console.log(user1)
 }
 
-main()
+//main()

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="/public/css/style.css">
+    </head>
+    <body>
+        <div id="application">
+            <h1>Привет!</h1>
+            <nav id="navigation">
+                <% if (currentUser.id){%>
+                <input type="button" value="Профиль" data-section="Profile">
+                <input type="button" value="О приложении" data-section="about">
+                <form method="GET" action="/logout" id="logout-form">
+                    <input type="submit" value="Выйти">
+                </form>
+                <%}%>
+            </nav>
+            <% if (currentUser.id==undefined){%>
+            <section id="login">
+                <form method="POST" action="/login" id="login-form">
+                    <h2>Вход</h2>
+                    <input type="text" placeholder="Введите имя" name="username"><br>
+                    <input type="password" placeholder="Введите пароль" name="password"><br>
+                    <input type="submit" value="Войти" id="login-button">
+                </form>
+            </section>
+            <%}%>
+            <section id="Profile" hidden>
+                <h2>Меня зовут <span><%=MyName%></span></h2>
+                <h2>Я люблю кино</h2>
+            </section>
+            <section id="about" hidden>
+                <h2>Это приложение</h2>
+            </section>
+        </div>
+        <script>
+
+            const nav = document.getElementById('navigation')
+
+            const application = document.getElementById('application')
+            const liveSectionsCollection = application.getElementsByTagName('section')
+
+            nav.addEventListener('click', function(event){
+                window.me=1
+                console.log(event.target)
+                const sectionId = event.target.getAttribute('data-section')
+                console.log(sectionId)
+                console.log(liveSectionsCollection)
+                const liveSectionsArray = Array.from(liveSectionsCollection)
+                liveSectionsArray.forEach(function (sectionElement){
+                sectionElement.hidden = true
+                if(sectionElement.id === sectionId){
+                    sectionElement.hidden = false
+                }
+                })
+            })
+
+            
+        </script>
+    </body>
+</html>
