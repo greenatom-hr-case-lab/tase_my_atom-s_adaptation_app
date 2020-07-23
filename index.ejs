@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="/public/css/style.css">
+        <!-----------------------------------------------ReactJS------------------------------------------------------>
+        <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+        <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+        <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+        <!-----------------------------------------------ReactJS------------------------------------------------------>
+
+        <!-------------------------------------------Material Design-------------------------------------------------->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <!-------------------------------------------Material Design-------------------------------------------------->
+
+    </head>
+    <body>
+        <div id="application">
+            <nav id="navigation">
+                <div class="teal lighten-2 nav-wrapper">
+                    <a href="#" class="brand-logo right">Logo</a>
+                    <ul>
+                    <% if (currentUser.id){%>
+                        <li><input class="teal lighten-2 btn" type="button" value="Профиль" data-section="Profile"></li>
+                        <li><input class="teal lighten-2 btn" type="button" value="О приложении" data-section="about"></li>
+                        <li><input class="teal lighten-2 btn" type="button" value="Список сотрудников" data-section="mycrooks"></li>
+                    <% if (currentUser.hr==1){%>
+                        <li><input class="teal lighten-2 btn" type="button" value="Новый пользователь" data-section="newcrook"></li>
+                    <%}%>
+                        <li><form method="GET" action="/logout" id="logout-form">
+                                <input class="teal lighten-2 btn" type="submit" value="Выйти">
+                            </form></li>
+                    <%}%>
+                    </ul>
+                </div>
+            </nav>
+            <div class="container">
+            <!---<h3>Добро пожаловать</h3>--->
+
+            <% if (currentUser.id==undefined){%>
+            <section id="login">
+                    <div class="row">
+                        <div class="col s12 m6 l4"></div>
+                        <div class="col s12 m6 l4">
+                            <form method="POST" action="/login" id="login-form">
+                                <h3>Вход</h3>
+                                <input type="text" placeholder="Введите имя" name="username"><br><br>
+                                <input type="password" placeholder="Введите пароль" name="password"><br><br>
+                                <input class="waves-effect waves-light btn" type="submit" value="Войти" id="login-button">
+                            </form>
+                        </div>
+                        <div class="col s12 m6 l4"></div>
+                    </div>
+            </section>
+            <%}%>
+            <section id="mycrooks" hidden>
+                <% if ((currentUser.boss==1)||(currentUser.hr==1)){%>
+                    <p>Список сотрудников</p>
+                    <table class="highlight">
+                        <thead>
+                        <tr>
+                            <th>Имя сотрудника</th>
+                            <th>Должность</th>
+                            <th>Прочее</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr>
+                            <td>Вавилен</td>
+                            <td>Криэйтор</td>
+                            <td>образование, дата рождения и т.п.</td>
+                        </tr>
+                        <tr>
+                            <td>Арсентий</td>
+                            <td>Менеджер</td>
+                            <td>образование, дата рождения и т.п.</td>
+                        </tr>
+                        <tr>
+                            <td>Иммануил</td>
+                            <td>Бухгалтер</td>
+                            <td>образование, дата рождения и т.п.</td>
+                        </tr>
+                        <tr>
+                            <td>Харон</td>
+                            <td>Водитель</td>
+                            <td>образование, дата рождения и т.п.</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <!------------------------------------ReactJS--------------------------------------------->
+                    <div id="root"></div>
+                    <script type="text/babel">
+                        ReactDOM.render(
+                                <h5>тут был реакт</h5>,
+                            document.getElementById('root')
+                        );
+                    </script>
+                    <!------------------------------------ReactJS--------------------------------------------->
+                        <option value="" disabled selected>Choose your slave</option>
+                    <% for(var i=0; i<myCrooks.length; i++) {%>
+                        <button class="waves-effect waves-light btn" onclick="openEdit(event)"><%= myCrooks[i].name %></button>
+                    <%}%>
+                <%}%>
+            </section>
+            <section id="Profile" hidden>
+                <!---->
+                <br>
+                <div class="container">
+                    <div class="row">
+                        <div class="input-field col s4">
+                            <input value="<% if (currentUser.id!==undefined){%><%=currentUser.name%><%}%>" id="first_name2" type="text" class="validate">
+                            <label class="active" for="first_name2">Имя</label>
+                            <p><%=currentUser.id%></p>
+                        </div>
+                        <div class="input-field col s4">
+                            <input value="Должность" id="first_name2" type="text" class="validate">
+                            <label class="active" for="status_name2">Должность</label>
+                        </div>
+                        <div class="input-field col s4">
+                            <div style="padding-top:76.400%;position:relative;">
+                                <iframe src="https://gifer.com/embed/1ghS" width="100%" height="100%"
+                                        style='position:absolute;top:0;left:0;' frameBorder="0" allowFullScreen>
+                                </iframe>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-panel teal">
+                                    <span class="white-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                        Fusce nec imperdiet leo. Sed interdum efficitur ante, ut iaculis tellus tempus nec.
+                                        Nulla facilisi. Cras tortor orci, sollicitudin id quam et, dapibus consequat orci.
+                                        Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+                                        Fusce ullamcorper sodales massa, sit amet viverra elit.
+                                        In aliquet auctor felis, nec interdum nunc sollicitudin dapibus.
+                                        Ut tempor purus quis nulla condimentum mollis. Aliquam erat volutpat.
+                                        Duis efficitur nibh quam, a malesuada ante dictum vel.
+                                        Phasellus ultricies tellus risus, sed iaculis nisi gravida tincidunt.
+                                    </span>
+                    </div>
+                </div>
+            </section>
+            <section id="about" hidden>
+                <h4>Это приложение</h4>
+                <div style="padding-top:77.419%;position:relative;">
+                    <iframe src="https://gifer.com/embed/1ZDm" width="60%" height="60%" style='position:absolute;top:0;left:0;' frameBorder="0" allowFullScreen>
+                    </iframe></div>
+            </section>
+            <section id="Edit" hidden>
+                <p>Edit here</p>
+                <form action="/main">
+                    <input class="waves-effect waves-light btn" type="submit" onclick="closeEdit()" value="edit" id="edit-button">
+                </form>
+            </section>
+            <section id="newcrook" hidden>
+                <div class="row">
+                    <div class="col s12 m6 l4"></div>
+                    <div class="col s12 m6 l4">
+                        <form method="POST" action="/newuser" id="login-form">
+                            <br><br><input type="text" name="login" placeholder="Ведите логин"><br>
+                            <input type="password" name="password" placeholder="Ведите пароль"><br>
+                            <input type="text" name="name" placeholder="Ведите имя"><br>
+                            <input type="text" name="last_name" placeholder="Введите фамилию"><br>
+                            <input type="text" name="patronimic" placeholder="Введите отчество"><br>
+                            <p>Выбирите руководтеля</p>
+                            <select name="boss_id">
+                                <% for(var i=0; i<bosses.length; i++) {%>
+                                <option value="<%=bosses[i].id%>"><%=bosses[i].name%></option>
+                                <%}%>
+                            </select>
+                            <input class="waves-effect waves-light btn" type="submit" value="Создать пользователя">
+                        </form>
+                    </div>
+                    <div class="col s12 m6 l4"></div>
+                </div>
+
+            </section>
+        </div>
+
+
+        </div>
+        <script>
+
+            const nav = document.getElementById('navigation')
+
+            const application = document.getElementById('application')
+            const liveSectionsCollection = application.getElementsByTagName('section')
+
+            nav.addEventListener('click', function(event){
+                window.me=1
+                console.log(event.target)
+                const sectionId = event.target.getAttribute('data-section')
+                console.log(sectionId)
+                console.log(liveSectionsCollection)
+                const liveSectionsArray = Array.from(liveSectionsCollection)
+                liveSectionsArray.forEach(function (sectionElement){
+                sectionElement.hidden = true
+                if(sectionElement.id === sectionId){
+                    sectionElement.hidden = false
+                }
+                })
+            })
+
+            function openEdit(event){
+                document.getElementById("mycrooks").hidden=true
+                document.getElementById("Edit").hidden=false
+                console.log(event.target)
+            }
+
+            function closeEdit(){
+                document.getElementById("Edit").hidden=true
+            }
+
+        </script>
+
+        <!-------------------------------------------Material Design-------------------------------------------------->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <!-------------------------------------------Material Design-------------------------------------------------->
+    </body>
+</html>
