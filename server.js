@@ -56,10 +56,12 @@ app.post('/login', urlencodedParser, async function(req,res){
             let arr = await currentUser.findMyCrooks()
             let users = []
             bosses= await selects.findBosses()
-            for (let u of arr) {
-                let us=new User
-                await us.findById(u)
-                users.push(us)
+            if (arr){
+                for (let u of arr) {
+                    let us=new User
+                    await us.findById(u)
+                    users.push(us)
+                }
             }
             res.render('index',{MyName:currentUser.name, currentUser: currentUser, myCrooks: users,bosses: bosses})
         }else{
@@ -74,6 +76,8 @@ app.post('/login', urlencodedParser, async function(req,res){
 })
 
 app.post("/newuser", urlencodedParser, async function(req,res){
+    let currentUser = new User
+    await currentUser.findByLogin(req.session.username)
     let user = new User
     user.name=req.body.name
     user.last_name=req.body.last_name
