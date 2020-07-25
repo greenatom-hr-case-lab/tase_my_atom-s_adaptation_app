@@ -13,6 +13,21 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
         <!-------------------------------------------Material Design-------------------------------------------------->
 
+        <!-------------------------------------------jQuery Core 3.5.1------------------------------------------------>
+        <script
+                src="https://code.jquery.com/jquery-3.5.1.min.js"
+                integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+                crossorigin="anonymous"></script>
+        <!-------------------------------------------jQuery Core 3.5.1------------------------------------------------>
+
+        <!-------------------------------------------Код для селекта-------------------------------------------------->
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $('select').formSelect();
+            });
+        </script>
+        <!-------------------------------------------Код для селекта-------------------------------------------------->
+
     </head>
     <body>
         <div id="application">
@@ -162,11 +177,14 @@
                             <input type="text" name="last_name" placeholder="Введите фамилию"><br>
                             <input type="text" name="patronimic" placeholder="Введите отчество"><br>
                             <p>Выбирите руководтеля</p>
-                            <select name="boss_id">
-                                <% for(var i=0; i<bosses.length; i++) {%>
-                                <option value="<%=bosses[i].id%>"><%=bosses[i].name%></option>
-                                <%}%>
-                            </select>
+                            <div class="input-field col s12">
+                                <select name="boss_id">
+                                    <% for(var i=0; i<bosses.length; i++) {%>
+                                    <option value="<%=bosses[i].id%>"><%=bosses[i].name%></option>
+                                    <%}%>
+                                </select>
+                            </div>
+                            <br><br>
                             <input class="waves-effect waves-light btn" type="submit" value="Создать пользователя">
                         </form>
                     </div>
@@ -175,8 +193,6 @@
 
             </section>
         </div>
-
-
         </div>
         <script>
 
