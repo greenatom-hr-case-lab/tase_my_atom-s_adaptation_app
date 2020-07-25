@@ -114,10 +114,10 @@ class User{
     
     let arr=[]
     if(this.goals){
-    for (let i = 0; i < this.goals.length; i++) {
-      arr[i]=this.goals[i].join("&&")
-    }
-    arr=arr.join("||")
+      for (let i = 0; i < this.goals.length; i++) {
+        arr[i]=this.goals[i].join("&&")
+      }
+      arr=arr.join("||")
     }else{
       arr=""
     }
@@ -152,11 +152,14 @@ class User{
 
     const sql="UPDATE user set name=?, last_name=?, patronimic=?, login=?, password=?, goals=? where id=?"
     let arr=[]
-
-    for (let i = 0; i < this.goals.length; i++) {
-      arr[i]=this.goals[i].join("&&")
+    if(this.goals){
+      for (let i = 0; i < this.goals.length; i++) {
+        arr[i]=this.goals[i].join("&&")
+      }
+      arr=arr.join("||")
+    }else{
+      arr=""
     }
-    arr=arr.join("||")
 
     await connection.query(sql, [this.name, this.last_name, this.patronimic, this.login, this.password, arr,this.id], function(err, results) {
       if(err) console.log(err);
@@ -194,10 +197,10 @@ async function main(){
     users.push(us)
   }
   let user1 = new User
-  await user1.findById(arr[1])
-  user1.goals[0][0]="goal"
+  await user1.findById(arr[4])
+  //user1.goals[0][0]="goal"
   user1.update()
-  console.log(users)
+  console.log(user1)
 }
 
 //main()

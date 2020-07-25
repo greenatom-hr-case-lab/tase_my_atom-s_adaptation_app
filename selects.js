@@ -10,13 +10,13 @@ const config = {
 async function findBosses(){
     const connection = mysql.createPool(config);
     const [results, fields] = await connection.execute('select * from user where boss = 1')
-    var bosses=[]
-    for (const boss of results) {
+    let bosses=[]
+    for (let boss of results) {
         let user = new User
-        user.id=results[0].id
-        user.name=results[0].name
-        user.last_name=results[0].last_name
-        user.patronimic=results[0].patronimic
+        user.id=boss.id
+        user.name=boss.name
+        user.last_name=boss.last_name
+        user.patronimic=boss.patronimic
         bosses.push(user)
     }
     connection.end()

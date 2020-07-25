@@ -12,22 +12,31 @@ const urlencodedParser = bodyParser.urlencoded({ extended: false })
 app.use(cookieParser());
 app.use(session({ secret: 'your secret here'} ));
 
-var currentUser = new User
+//var currentUser = new User
 
 app.set('view engine', 'ejs')
 
 app.use('/public', express.static('public'))
 
 app.get('/', async function(req,res){
+    let currentUser = new User
     let myCrooks = []
-    bosses= await selects.findBosses()
+    if (currentUser.id){
+        res.redirect('/main')
+    }else{
+        bosses= await selects.findBosses()
     res.render('index',{MyName:"user1.name", currentUser: currentUser, myCrooks: myCrooks, bosses: bosses})
+
+    }
 })
 
 app.get('/main', async function(req,res){
+    let currentUser = new User
+    await currentUser.findByLogin(req.session.username)
     let arr = await currentUser.findMyCrooks()
+    //console.log(req.session.id)
     bosses= await selects.findBosses()
-        var users = []
+        let users = []
         for (let u of arr) {
             let us=new User
             await us.findById(u)
@@ -37,6 +46,7 @@ app.get('/main', async function(req,res){
 })
 
 app.post('/login', urlencodedParser, async function(req,res){
+    let currentUser = new User
     if (!req.body) return res.sendStatus(400);
     let user = new User
     if(await user.findByLogin(req.body.username)==0){
@@ -44,7 +54,7 @@ app.post('/login', urlencodedParser, async function(req,res){
             currentUser=user
             req.session.username=user.login
             let arr = await currentUser.findMyCrooks()
-            var users = []
+            let users = []
             bosses= await selects.findBosses()
             for (let u of arr) {
                 let us=new User
@@ -74,7 +84,7 @@ app.post("/newuser", urlencodedParser, async function(req,res){
     user.password=req.body.password
     user.save()
     let arr = await currentUser.findMyCrooks()
-    var users = []
+    let users = []
     bosses= await selects.findBosses()
     for (let u of arr) {
         let us=new User
@@ -86,7 +96,7 @@ app.post("/newuser", urlencodedParser, async function(req,res){
 
 app.get('/logout', async function(req,res){
     req.session.username=''
-    currentUser = new User
+    //currentUser = new User
     res.redirect('/')
 })
 
